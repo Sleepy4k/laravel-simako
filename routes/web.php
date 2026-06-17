@@ -37,6 +37,8 @@ Route::middleware('auth')->post('/logout', [LoginController::class, 'destroy'])-
 Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(function () {
 
     Route::get('/', [DashboardController::class, 'index'])->name('index');
+    Route::get('/profile', [User\ProfileController::class, 'show'])->name('profile.show');
+    Route::patch('/profile', [User\ProfileController::class, 'update'])->name('profile.update');
 
     // ── Pengguna ─────────────────────────────────────────────────────────────
     Route::middleware('role:pengguna')->group(function () {
@@ -53,9 +55,6 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
         Route::get('/messages', [User\MessageController::class, 'index'])->name('messages.index');
         Route::get('/messages/{thread}', [User\MessageController::class, 'show'])->name('messages.show');
         Route::post('/messages/{thread}', [User\MessageController::class, 'store'])->name('messages.store');
-
-        Route::get('/profile', [User\ProfileController::class, 'show'])->name('profile.show');
-        Route::patch('/profile', [User\ProfileController::class, 'update'])->name('profile.update');
     });
 
     // ── Tenant ───────────────────────────────────────────────────────────────
