@@ -40,7 +40,7 @@ function handleFileChange(event: Event) {
 }
 
 function submitProof() {
-    proofForm.post(`/dashboard/payments/${props.payment.id}/proofs`, { forceFormData: true })
+    proofForm.post(`/dashboard/payments/${props.payment.id}/proof`, { forceFormData: true })
 }
 </script>
 

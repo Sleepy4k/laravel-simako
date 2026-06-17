@@ -74,7 +74,6 @@ onMounted(() => scrollToBottom())
                         type="text"
                         placeholder="Ketik pesan..."
                         class="flex-1 px-3 py-2 text-sm border border-(--color-border) focus:outline-none focus:border-(--color-primary)"
-                        @keyup.enter="sendMessage"
                     />
                     <button
                         type="submit"

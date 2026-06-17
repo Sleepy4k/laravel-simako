@@ -5,6 +5,7 @@ import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import Badge from '@/components/ui/Badge.vue'
 import Button from '@/components/ui/Button.vue'
 import Input from '@/components/ui/Input.vue'
+import Modal from '@/components/ui/Modal.vue'
 import type { BankAccount } from '@/types/models'
 import * as BankAccountController from '@/actions/App/Http/Controllers/Tenant/BankAccountController'
 
@@ -55,9 +56,28 @@ function submitEdit(id: number) {
     })
 }
 
-function deleteAccount(id: number) {
-    if (confirm('Hapus rekening ini?')) {
-        router.delete(BankAccountController.destroy.url(id))
+const showDeleteModal = ref(false)
+const accountToDelete = ref<number | null>(null)
+const deleting = ref(false)
+
+function confirmDelete(id: number) {
+    accountToDelete.value = id
+    showDeleteModal.value = true
+}
+
+function doDelete() {
+    if (accountToDelete.value !== null) {
+        deleting.value = true
+        router.delete(BankAccountController.destroy.url(accountToDelete.value), {
+            onSuccess: () => {
+                showDeleteModal.value = false
+                accountToDelete.value = null
+                deleting.value = false
+            },
+            onError: () => {
+                deleting.value = false
+            }
+        })
     }
 }
 </script>
@@ -118,17 +138,29 @@ function deleteAccount(id: number) {
                                 <p class="text-sm text-(--color-text-secondary)">a/n {{ account.account_holder }}</p>
                             </div>
                             <div class="flex gap-3">
-                                <button class="text-sm text-(--color-secondary) hover:underline" @click="startEdit(account)">Edit</button>
-                                <button class="text-sm text-(--color-primary) hover:underline" @click="deleteAccount(account.id)">Hapus</button>
+                                <button class="text-sm text-(--color-secondary) hover:underline cursor-pointer" @click="startEdit(account)">Edit</button>
+                                <button class="text-sm text-(--color-primary) hover:underline cursor-pointer" @click="confirmDelete(account.id)">Hapus</button>
                             </div>
                         </div>
                     </template>
                 </div>
             </div>
 
-            <div v-else-if="!showAddForm" class="bg-white p-12 text-center text-(--color-text-secondary)">
+            <div v-else-if="!showAddForm" class="bg-white p-12 border border-(--color-border) rounded-2xl text-center text-(--color-text-secondary)">
                 <p>Belum ada rekening bank.</p>
             </div>
+
+            <!-- Delete Confirmation Modal -->
+            <Modal
+                :open="showDeleteModal"
+                title="Hapus Rekening Bank?"
+                message="Tindakan ini tidak dapat dibatalkan. Rekening ini tidak akan digunakan lagi sebagai metode pembayaran sewa."
+                confirm-label="Ya, Hapus"
+                confirm-variant="danger"
+                :loading="deleting"
+                @confirm="doDelete"
+                @cancel="showDeleteModal = false; accountToDelete = null"
+            />
         </div>
     </DashboardLayout>
 </template>

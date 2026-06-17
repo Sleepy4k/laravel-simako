@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useForm } from '@inertiajs/vue3'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import Badge from '@/components/ui/Badge.vue'
 import Button from '@/components/ui/Button.vue'
+import Modal from '@/components/ui/Modal.vue'
 import type { Booking } from '@/types/models'
 import * as UserBookingController from '@/actions/App/Http/Controllers/User/BookingController'
 
@@ -40,13 +42,15 @@ function formatCurrency(amount: number) {
 }
 
 const isCancellable = ['pending', 'approved'].includes(props.booking.status)
-
+const showCancelModal = ref(false)
 const cancelForm = useForm({ cancellation_reason: '' })
 
-function cancel() {
-    if (confirm('Yakin ingin membatalkan booking ini?')) {
-        cancelForm.patch(UserBookingController.cancel.url(props.booking.id))
-    }
+function doCancel() {
+    cancelForm.patch(UserBookingController.cancel.url(props.booking.id), {
+        onSuccess: () => {
+            showCancelModal.value = false
+        }
+    })
 }
 </script>
 
@@ -89,11 +93,23 @@ function cancel() {
             </div>
 
             <!-- Cancel -->
-            <div v-if="isCancellable" class="bg-white p-5">
-                <Button variant="outline" @click="cancel" :loading="cancelForm.processing">
+            <div v-if="isCancellable" class="bg-white p-5 border border-(--color-border) rounded-2xl shadow-sm">
+                <Button variant="outline" @click="showCancelModal = true">
                     Batalkan Booking
                 </Button>
             </div>
+
+            <!-- Cancel Confirmation Modal -->
+            <Modal
+                :open="showCancelModal"
+                title="Batalkan Pengajuan Booking?"
+                message="Tindakan ini tidak dapat dibatalkan. Kamar ini akan tersedia kembali untuk penyewa lain."
+                confirm-label="Ya, Batalkan"
+                confirm-variant="danger"
+                :loading="cancelForm.processing"
+                @confirm="doCancel"
+                @cancel="showCancelModal = false"
+            />
         </div>
     </DashboardLayout>
 </template>

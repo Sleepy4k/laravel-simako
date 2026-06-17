@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useForm } from '@inertiajs/vue3'
+import { useForm, router } from '@inertiajs/vue3'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import Input from '@/components/ui/Input.vue'
 import Button from '@/components/ui/Button.vue'
@@ -43,7 +43,7 @@ function toggleFacility(id: number) {
     }
 }
 
-function goBack() { window.history.back() }
+function goBack() { router.visit('/dashboard/kosts') }
 
 function submit() {
     form.patch(TenantKostController.update.url(props.kost.id))

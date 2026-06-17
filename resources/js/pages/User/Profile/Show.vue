@@ -12,6 +12,7 @@ const props = defineProps<{
 }>()
 
 const form = useForm({
+    _method: 'PATCH',
     name: props.user.userProfile?.name ?? '',
     gender: props.user.userProfile?.gender ?? '',
     birth_date: props.user.userProfile?.birth_date ?? '',
