@@ -268,7 +268,6 @@ const tips = [
                         </div>
                         <div class="flex items-center justify-between pt-4 border-t border-slate-100 text-[10px] text-slate-400 font-semibold">
                             <span>{{ tip.date }}</span>
-                            <span class="text-rose-600 cursor-pointer hover:underline">Baca Selengkapnya →</span>
                         </div>
                     </div>
                 </div>

@@ -20,7 +20,7 @@ defineEmits<{
     <button
         :type="props.type"
         :disabled="props.disabled || props.loading"
-        class="inline-flex items-center justify-center font-semibold transition-colors focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+        class="inline-flex items-center justify-center font-bold tracking-wide transition-all focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed rounded-xl cursor-pointer active:scale-[0.98] shadow-xs"
         :class="[
             props.size === 'sm' ? 'px-3 py-1.5 text-xs' : props.size === 'lg' ? 'px-6 py-3 text-base' : 'px-4 py-2 text-sm',
             props.variant === 'primary' ? 'bg-(--color-primary) hover:bg-(--color-primary-hover) text-white' : '',

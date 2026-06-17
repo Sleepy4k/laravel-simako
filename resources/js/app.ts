@@ -1,5 +1,5 @@
 import { createInertiaApp, router } from '@inertiajs/vue3';
-import { createApp, h } from 'vue';
+import { createSSRApp, h } from 'vue';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 
@@ -14,7 +14,7 @@ createInertiaApp({
     title: (title) => (title ? `${title} — ${appName}` : appName),
     progress: false,
     setup({ el, App, props, plugin }) {
-        createApp({ render: () => h(App, props) })
+        createSSRApp({ render: () => h(App, props) })
             .use(plugin)
             .mount(el);
     },

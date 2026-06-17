@@ -23,7 +23,7 @@ const flash = computed(() => page.props.flash as { success?: string; error?: str
                 {{ flash.error }}
             </div>
 
-            <div class="bg-white px-8 py-10">
+            <div class="bg-white px-8 py-10 rounded-2xl border border-slate-100 shadow-sm">
                 <slot />
             </div>
         </div>

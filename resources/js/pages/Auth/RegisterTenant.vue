@@ -29,32 +29,40 @@ function submit() {
 
             <form @submit.prevent="submit" class="space-y-4">
                 <div class="border-b border-(--color-border) pb-4 mb-2">
-                    <p class="text-xs font-semibold uppercase tracking-wide text-(--color-text-secondary) mb-3">Data Pribadi</p>
+                    <p class="text-xs font-bold uppercase tracking-wide text-(--color-text-secondary) mb-3">Data Pribadi</p>
 
                     <div class="space-y-4">
                         <Input v-model="form.name" label="Nama Lengkap" placeholder="Nama lengkap" :error="form.errors.name" required />
-                        <Input v-model="form.email" type="email" label="Email" placeholder="email@contoh.com" :error="form.errors.email" required />
-                        <Input v-model="form.phone" label="Nomor HP" placeholder="08xxxxxxxxxx" :error="form.errors.phone" required />
-                        <Input v-model="form.password" type="password" label="Kata Sandi" placeholder="Minimal 8 karakter" :error="form.errors.password" required />
-                        <Input v-model="form.password_confirmation" type="password" label="Konfirmasi Kata Sandi" placeholder="Ulangi kata sandi" :error="form.errors.password_confirmation" required />
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <Input v-model="form.email" type="email" label="Email" placeholder="email@contoh.com" :error="form.errors.email" required />
+                            <Input v-model="form.phone" label="Nomor HP" placeholder="08xxxxxxxxxx" :error="form.errors.phone" required />
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <Input v-model="form.password" type="password" label="Kata Sandi" placeholder="Minimal 8 karakter" :error="form.errors.password" required />
+                            <Input v-model="form.password_confirmation" type="password" label="Konfirmasi Kata Sandi" placeholder="Ulangi kata sandi" :error="form.errors.password_confirmation" required />
+                        </div>
                     </div>
                 </div>
 
                 <div class="border-b border-(--color-border) pb-4 mb-2">
-                    <p class="text-xs font-semibold uppercase tracking-wide text-(--color-text-secondary) mb-3">Data Usaha</p>
+                    <p class="text-xs font-bold uppercase tracking-wide text-(--color-text-secondary) mb-3">Data Usaha</p>
                     <Input v-model="form.business_name" label="Nama Usaha" placeholder="Nama usaha kost" :error="form.errors.business_name" required />
                 </div>
 
                 <div>
-                    <p class="text-xs font-semibold uppercase tracking-wide text-(--color-text-secondary) mb-3">Rekening Bank</p>
+                    <p class="text-xs font-bold uppercase tracking-wide text-(--color-text-secondary) mb-3">Rekening Bank</p>
                     <div class="space-y-4">
-                        <Input v-model="form.bank_name" label="Nama Bank" placeholder="BCA, BRI, Mandiri, dll." :error="form.errors.bank_name" required />
-                        <Input v-model="form.account_number" label="Nomor Rekening" placeholder="Nomor rekening bank" :error="form.errors.account_number" required />
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <Input v-model="form.bank_name" label="Nama Bank" placeholder="BCA, BRI, Mandiri, dll." :error="form.errors.bank_name" required />
+                            <Input v-model="form.account_number" label="Nomor Rekening" placeholder="Nomor rekening bank" :error="form.errors.account_number" required />
+                        </div>
                         <Input v-model="form.account_holder" label="Atas Nama" placeholder="Nama sesuai rekening" :error="form.errors.account_holder" required />
                     </div>
                 </div>
 
-                <Button type="submit" class="w-full" :loading="form.processing">
+                <Button type="submit" class="w-full mt-4" :loading="form.processing">
                     Daftar sebagai Pemilik Kost
                 </Button>
             </form>

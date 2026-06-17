@@ -50,23 +50,23 @@ watch(search, () => {
             <h1 class="text-2xl font-bold text-(--color-text-primary) mb-6">Cari Kost</h1>
 
             <!-- Search -->
-            <div class="mb-4">
+            <div class="mb-6">
                 <input
                     v-model="search"
                     type="text"
                     placeholder="Cari nama kost atau kota..."
-                    class="w-full max-w-md px-4 py-2 text-sm bg-white border border-(--color-border) focus:outline-none focus:border-(--color-primary)"
+                    class="w-full max-w-md px-4.5 py-2.5 text-sm bg-white border border-(--color-border) rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-(--color-primary) transition-all placeholder:text-slate-400"
                 />
             </div>
 
             <!-- Filter chips -->
-            <div class="flex gap-2 mb-8 flex-wrap">
+            <div class="flex gap-2.5 mb-8 flex-wrap">
                 <button
                     v-for="f in typeFilters"
                     :key="f.value"
-                    class="px-4 py-1.5 text-sm font-medium transition-colors"
+                    class="px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-all rounded-xl cursor-pointer"
                     :class="activeType === f.value
-                        ? 'bg-(--color-primary) text-white'
+                        ? 'bg-(--color-primary) text-white shadow-sm'
                         : 'bg-white text-(--color-text-secondary) border border-(--color-border) hover:border-(--color-primary) hover:text-(--color-primary)'"
                     @click="setType(f.value)"
                 >

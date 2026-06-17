@@ -31,7 +31,7 @@ defineEmits<{
             :required="props.required"
             :disabled="props.disabled"
             :name="props.name"
-            class="w-full px-3 py-2 text-sm bg-white border border-(--color-border) text-(--color-text-primary) placeholder:text-(--color-text-secondary) focus:outline-none focus:border-(--color-primary) transition-colors disabled:bg-(--color-surface) disabled:cursor-not-allowed"
+            class="w-full px-3.5 py-2.5 text-sm bg-white border border-(--color-border) rounded-xl text-(--color-text-primary) placeholder:text-(--color-text-secondary)/60 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-(--color-primary) transition-all disabled:bg-(--color-surface) disabled:cursor-not-allowed"
             :class="props.error ? 'border-(--color-primary)' : ''"
             @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
         />

@@ -37,62 +37,68 @@ function submit() {
                     required
                 />
 
-                <Input
-                    v-model="form.email"
-                    type="email"
-                    label="Email (opsional)"
-                    placeholder="email@contoh.com"
-                    :error="form.errors.email"
-                />
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <Input
+                        v-model="form.email"
+                        type="email"
+                        label="Email (opsional)"
+                        placeholder="email@contoh.com"
+                        :error="form.errors.email"
+                    />
 
-                <Input
-                    v-model="form.phone"
-                    label="Nomor HP (opsional)"
-                    placeholder="08xxxxxxxxxx"
-                    :error="form.errors.phone"
-                />
-
-                <Input
-                    v-model="form.password"
-                    type="password"
-                    label="Kata Sandi"
-                    placeholder="Minimal 8 karakter"
-                    :error="form.errors.password"
-                    required
-                />
-
-                <Input
-                    v-model="form.password_confirmation"
-                    type="password"
-                    label="Konfirmasi Kata Sandi"
-                    placeholder="Ulangi kata sandi"
-                    :error="form.errors.password_confirmation"
-                    required
-                />
-
-                <div>
-                    <label class="block text-sm font-medium text-(--color-text-primary) mb-1">Jenis Kelamin</label>
-                    <select
-                        v-model="form.gender"
-                        class="w-full px-3 py-2 text-sm bg-white border border-(--color-border) text-(--color-text-primary) focus:outline-none focus:border-(--color-primary)"
-                    >
-                        <option value="">Pilih jenis kelamin</option>
-                        <option value="male">Laki-laki</option>
-                        <option value="female">Perempuan</option>
-                    </select>
-                    <p v-if="form.errors.gender" class="mt-1 text-xs text-(--color-primary)">{{ form.errors.gender }}</p>
+                    <Input
+                        v-model="form.phone"
+                        label="Nomor HP (opsional)"
+                        placeholder="08xxxxxxxxxx"
+                        :error="form.errors.phone"
+                    />
                 </div>
 
-                <Input
-                    v-model="form.birth_date"
-                    type="date"
-                    label="Tanggal Lahir"
-                    :error="form.errors.birth_date"
-                />
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <Input
+                        v-model="form.password"
+                        type="password"
+                        label="Kata Sandi"
+                        placeholder="Minimal 8 karakter"
+                        :error="form.errors.password"
+                        required
+                    />
+
+                    <Input
+                        v-model="form.password_confirmation"
+                        type="password"
+                        label="Konfirmasi Kata Sandi"
+                        placeholder="Ulangi kata sandi"
+                        :error="form.errors.password_confirmation"
+                        required
+                    />
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-(--color-text-primary) mb-1">Jenis Kelamin</label>
+                        <select
+                            v-model="form.gender"
+                            class="w-full px-3.5 py-2.5 text-sm bg-white border border-(--color-border) rounded-xl text-(--color-text-primary) focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-(--color-primary) transition-all"
+                        >
+                            <option value="">Pilih jenis kelamin</option>
+                            <option value="male">Laki-laki</option>
+                            <option value="female">Perempuan</option>
+                        </select>
+                        <p v-if="form.errors.gender" class="mt-1 text-xs text-(--color-primary)">{{ form.errors.gender }}</p>
+                    </div>
+
+                    <Input
+                        v-model="form.birth_date"
+                        type="date"
+                        label="Tanggal Lahir"
+                        :error="form.errors.birth_date"
+                    />
+                </div>
 
                 <Button
                     type="submit"
-                    class="w-full"
+                    class="w-full mt-2"
                     :loading="form.processing"
                 >
                     Daftar
