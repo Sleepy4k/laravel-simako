@@ -61,7 +61,7 @@ class RegisterController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('dashboard');
+        return redirect()->route('dashboard.index');
     }
 
     public function showTenantForm(): Response
@@ -107,6 +107,6 @@ class RegisterController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('dashboard');
+        return redirect()->route('dashboard.index');
     }
 }

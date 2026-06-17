@@ -42,7 +42,7 @@ class PaymentController extends Controller
         abort_if($payment->status === 'paid', 422, 'Pembayaran sudah dikonfirmasi.');
 
         $request->validate([
-            'proof' => ['required', 'image', 'max:4096'],
+            'proof' => ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:4096'],
         ]);
 
         $path = $request->file('proof')->store('payment-proofs', 'public');

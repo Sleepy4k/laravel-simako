@@ -22,4 +22,24 @@ class HomeController extends Controller
             'featuredKosts' => $featuredKosts,
         ]);
     }
+
+    public function contact(): Response
+    {
+        return Inertia::render('Public/Contact');
+    }
+
+    public function help(): Response
+    {
+        return Inertia::render('Public/Help');
+    }
+
+    public function terms(): Response
+    {
+        return Inertia::render('Public/Terms');
+    }
+
+    public function privacy(): Response
+    {
+        return Inertia::render('Public/Privacy');
+    }
 }

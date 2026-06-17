@@ -26,11 +26,15 @@ class BookingController extends Controller
 
     public function create(Room $room): Response
     {
-        $room->load('kost:id,name,slug,thumbnail', 'kost.address', 'kost.tenant.bankAccounts', 'prices', 'facilities:id,name,icon');
+        $room->load('kost:id,name,slug,thumbnail,status,user_id', 'kost.address', 'kost.tenant.bankAccounts', 'prices', 'facilities:id,name,icon');
 
-        abort_if(! $room->is_available || $room->kost->status !== 'active', 404);
+        abort_if(! $room->is_available, 422, 'Kamar tidak tersedia.');
+        abort_if($room->kost->status !== 'active', 422, 'Kost tidak aktif.');
 
-        return Inertia::render('User/Bookings/Create', ['room' => $room]);
+        return Inertia::render('User/Bookings/Create', [
+            'room' => $room,
+            'kost' => $room->kost,
+        ]);
     }
 
     public function store(Request $request): RedirectResponse

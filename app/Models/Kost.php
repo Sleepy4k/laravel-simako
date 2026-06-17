@@ -4,12 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /**
@@ -29,6 +32,8 @@ use Illuminate\Support\Str;
 #[Fillable(['user_id', 'name', 'slug', 'description', 'type', 'status', 'thumbnail', 'total_rooms', 'available_rooms'])]
 class Kost extends Model
 {
+    use HasFactory;
+
     protected static function boot(): void
     {
         parent::boot();
@@ -73,5 +78,12 @@ class Kost extends Model
     public function scopeOfType(Builder $query, string $type): void
     {
         $query->where('type', $type);
+    }
+
+    protected function thumbnail(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $value ? (str_starts_with($value, 'http') ? $value : Storage::url($value)) : null,
+        );
     }
 }

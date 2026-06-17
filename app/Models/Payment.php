@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -25,6 +26,8 @@ use Illuminate\Support\Carbon;
 #[Fillable(['booking_id', 'period_start', 'period_end', 'amount', 'status', 'due_date', 'paid_at', 'declined_at', 'decline_notes'])]
 class Payment extends Model
 {
+    use HasFactory;
+
     protected function casts(): array
     {
         return [
