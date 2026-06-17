@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Route;
 
 // ── Public ────────────────────────────────────────────────────────────────────
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+Route::get('/help', [HomeController::class, 'help'])->name('help');
+Route::get('/terms', [HomeController::class, 'terms'])->name('terms');
+Route::get('/privacy', [HomeController::class, 'privacy'])->name('privacy');
 Route::get('/kosts', [PublicKostController::class, 'index'])->name('kosts.index');
 Route::get('/kosts/{kost:slug}', [PublicKostController::class, 'show'])->name('kosts.show');
 
