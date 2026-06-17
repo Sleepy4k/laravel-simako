@@ -50,6 +50,8 @@ class TenantController extends Controller
             'suspension_reason' => null,
         ]);
 
+        $user->update(['is_active' => true]);
+
         return back()->with('success', 'Tenant berhasil diverifikasi.');
     }
 
@@ -59,11 +61,14 @@ class TenantController extends Controller
 
         $request->validate([
             'reason' => ['nullable', 'string', 'max:500'],
+            'suspension_reason' => ['nullable', 'string', 'max:500'],
         ]);
+
+        $reason = $request->input('suspension_reason') ?? $request->input('reason');
 
         $user->tenantProfile()->update([
             'suspended_at' => now(),
-            'suspension_reason' => $request->reason,
+            'suspension_reason' => $reason,
         ]);
 
         $user->update(['is_active' => false]);
