@@ -27,6 +27,8 @@ class TenantProfile extends Model
 {
     use HasFactory;
 
+    protected $appends = ['is_verified', 'is_suspended'];
+
     protected function casts(): array
     {
         return [

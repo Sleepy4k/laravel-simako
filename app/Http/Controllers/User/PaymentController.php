@@ -27,12 +27,18 @@ class PaymentController extends Controller
         $this->authorize('view', $payment);
 
         $payment->load([
-            'booking.room.kost:id,name,slug',
+            'booking.room.kost:id,name,slug,user_id',
             'booking.room.kost.tenant.bankAccounts',
             'proofs',
         ]);
 
-        return Inertia::render('User/Payments/Show', ['payment' => $payment]);
+        $bankAccounts = $payment->booking->room->kost->tenant->bankAccounts;
+        $bankAccount = $bankAccounts->firstWhere('is_primary', true) ?? $bankAccounts->first();
+
+        return Inertia::render('User/Payments/Show', [
+            'payment' => $payment,
+            'bankAccount' => $bankAccount,
+        ]);
     }
 
     public function uploadProof(Request $request, Payment $payment): RedirectResponse
@@ -55,6 +61,7 @@ class PaymentController extends Controller
 
         $payment->update(['status' => 'pending_verification']);
 
-        return back()->with('success', 'Bukti pembayaran berhasil diunggah. Menunggu konfirmasi dari pemilik kost.');
+        return redirect()->route('dashboard.payments.show', $payment)
+            ->with('success', 'Bukti pembayaran berhasil diunggah. Menunggu konfirmasi dari pemilik kost.');
     }
 }

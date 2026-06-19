@@ -43,12 +43,15 @@ class TenantController extends Controller
     {
         abort_if(! $user->isTenant(), 404);
 
-        $user->tenantProfile()->update([
-            'verified_at' => now(),
-            'verified_by' => $request->user()->id,
-            'suspended_at' => null,
-            'suspension_reason' => null,
-        ]);
+        $user->tenantProfile()->updateOrCreate(
+            ['user_id' => $user->id],
+            [
+                'verified_at' => now(),
+                'verified_by' => $request->user()->id,
+                'suspended_at' => null,
+                'suspension_reason' => null,
+            ],
+        );
 
         $user->update(['is_active' => true]);
 
@@ -66,10 +69,13 @@ class TenantController extends Controller
 
         $reason = $request->input('suspension_reason') ?? $request->input('reason');
 
-        $user->tenantProfile()->update([
-            'suspended_at' => now(),
-            'suspension_reason' => $reason,
-        ]);
+        $user->tenantProfile()->updateOrCreate(
+            ['user_id' => $user->id],
+            [
+                'suspended_at' => now(),
+                'suspension_reason' => $reason,
+            ],
+        );
 
         $user->update(['is_active' => false]);
 

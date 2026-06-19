@@ -14,7 +14,7 @@ class UserController extends Controller
     public function index(Request $request): Response
     {
         $users = User::whereHas('role', fn ($q) => $q->where('name', 'pengguna'))
-            ->with('userProfile:user_id,name,avatar')
+            ->with('userProfile:user_id,name,avatar,gender')
             ->when($request->search, fn ($q) => $q->where(function ($q2) use ($request) {
                 $q2->where('email', 'like', '%'.$request->search.'%')
                     ->orWhere('phone', 'like', '%'.$request->search.'%')

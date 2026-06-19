@@ -12,9 +12,13 @@ class ProfileController extends Controller
 {
     public function show(Request $request): Response
     {
-        $user = $request->user()->load('userProfile');
+        $user = $request->user();
+        $userProfile = $user->userProfile()->first();
 
-        return Inertia::render('User/Profile/Show', ['user' => $user]);
+        return Inertia::render('User/Profile/Show', [
+            'user' => $user,
+            'userProfile' => $userProfile,
+        ]);
     }
 
     public function update(Request $request): RedirectResponse

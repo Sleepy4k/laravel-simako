@@ -10,11 +10,11 @@ use App\Models\Role;
 use App\Models\TenantProfile;
 use App\Models\User;
 use App\Models\UserProfile;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class RegisterController extends Controller
 {
@@ -28,7 +28,7 @@ class RegisterController extends Controller
         return Inertia::render('Auth/RegisterUser');
     }
 
-    public function storeUser(RegisterUserRequest $request): RedirectResponse
+    public function storeUser(RegisterUserRequest $request): SymfonyResponse
     {
         $validated = $request->validated();
 
@@ -61,7 +61,7 @@ class RegisterController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('dashboard.index');
+        return Inertia::location(route('dashboard.index'));
     }
 
     public function showTenantForm(): Response
@@ -69,7 +69,7 @@ class RegisterController extends Controller
         return Inertia::render('Auth/RegisterTenant');
     }
 
-    public function storeTenant(RegisterTenantRequest $request): RedirectResponse
+    public function storeTenant(RegisterTenantRequest $request): SymfonyResponse
     {
         $validated = $request->validated();
 
@@ -107,6 +107,6 @@ class RegisterController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('dashboard.index');
+        return Inertia::location(route('dashboard.index'));
     }
 }

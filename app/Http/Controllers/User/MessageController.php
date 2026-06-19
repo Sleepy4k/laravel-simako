@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kost;
 use App\Models\Message;
 use App\Models\MessageThread;
 use Illuminate\Http\RedirectResponse;
@@ -14,10 +15,16 @@ class MessageController extends Controller
 {
     public function index(Request $request): Response
     {
-        $threads = MessageThread::whereHas('booking', fn ($q) => $q->where('user_id', $request->user()->id))
+        $userId = $request->user()->id;
+
+        $threads = MessageThread::where(function ($q) use ($userId) {
+            $q->whereHas('booking', fn ($b) => $b->where('user_id', $userId))
+                ->orWhere('user_id', $userId);
+        })
             ->with([
                 'booking.room.kost:id,name,slug,thumbnail',
                 'booking.room.kost.tenant.userProfile:user_id,name,avatar',
+                'kost:id,name,slug,thumbnail',
                 'messages' => fn ($q) => $q->latest()->limit(1),
             ])
             ->latest()
@@ -33,6 +40,8 @@ class MessageController extends Controller
         $thread->load([
             'booking.room.kost:id,name,slug',
             'booking.room.kost.tenant.userProfile:user_id,name,avatar',
+            'kost:id,name,slug',
+            'kost.tenant.userProfile:user_id,name,avatar',
             'messages.sender.userProfile:user_id,name,avatar',
         ]);
 
@@ -62,5 +71,16 @@ class MessageController extends Controller
         ]);
 
         return back();
+    }
+
+    public function storeFromKost(Request $request, Kost $kost): RedirectResponse
+    {
+        $user = $request->user();
+
+        $thread = MessageThread::firstOrCreate(
+            ['kost_id' => $kost->id, 'user_id' => $user->id],
+        );
+
+        return redirect()->route('dashboard.messages.show', $thread);
     }
 }

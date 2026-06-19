@@ -120,9 +120,11 @@ class RoomController extends Controller
             'prices.*.period' => ['required', 'in:monthly,quarterly,semi_annual,annual'],
             'prices.*.price' => ['required', 'integer', 'min:0'],
             'prices.*.deposit' => ['nullable', 'integer', 'min:0'],
+            'images' => ['nullable', 'array', 'max:10'],
+            'images.*' => ['image', 'max:4096'],
         ]);
 
-        DB::transaction(function () use ($kost, $room, $validated) {
+        DB::transaction(function () use ($request, $kost, $room, $validated) {
             $wasAvailable = $room->is_available;
             $isNowAvailable = $validated['is_available'] ?? true;
 
@@ -143,6 +145,16 @@ class RoomController extends Controller
             }
 
             $room->facilities()->sync($validated['facility_ids'] ?? []);
+
+            if ($request->hasFile('images')) {
+                $sort = $room->images()->max('sort_order') + 1;
+                foreach ($request->file('images') as $image) {
+                    $room->images()->create([
+                        'path' => $image->store('rooms/images', 'public'),
+                        'sort_order' => $sort++,
+                    ]);
+                }
+            }
 
             if ($wasAvailable && ! $isNowAvailable) {
                 $kost->decrement('available_rooms');

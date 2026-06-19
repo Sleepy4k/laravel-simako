@@ -43,7 +43,7 @@ class DashboardController extends Controller
                     ->whereIn('status', ['unpaid', 'pending_verification'])
                     ->count(),
             ],
-            'recent_bookings' => $user->bookings()
+            'recentBookings' => $user->bookings()
                 ->with('room.kost:id,name,slug,thumbnail', 'roomPrice:id,period,price')
                 ->latest()
                 ->limit(5)
@@ -82,7 +82,7 @@ class DashboardController extends Controller
                 'pending_verifications' => $pendingVerificationsCount,
                 'monthly_earnings' => (int) $monthlyEarnings,
             ],
-            'recent_bookings' => Booking::whereHas('room.kost', fn ($q) => $q->whereIn('id', $kostIds))
+            'recentBookings' => Booking::whereHas('room.kost', fn ($q) => $q->whereIn('id', $kostIds))
                 ->with('user.userProfile:user_id,name,avatar', 'room:id,name,kost_id', 'room.kost:id,name')
                 ->latest()
                 ->limit(5)
