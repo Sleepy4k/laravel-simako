@@ -163,9 +163,12 @@ export interface Message {
 
 export interface MessageThread {
     id: number;
-    booking_id: number;
+    booking_id: number | null;
+    kost_id: number | null;
+    user_id: number | null;
     created_at: string;
     booking?: Booking;
+    kost?: Kost;
     messages?: Message[];
 }
 

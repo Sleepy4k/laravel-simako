@@ -21,6 +21,8 @@ const form = useForm({
     province: '',
     postal_code: '',
     facility_ids: [] as number[],
+    thumbnail: null as File | null,
+    images: [] as File[],
 })
 
 const groupedFacilities = computed(() => {
@@ -38,6 +40,17 @@ function toggleFacility(id: number) {
         form.facility_ids.push(id)
     } else {
         form.facility_ids.splice(idx, 1)
+    }
+}
+
+function handleThumbnailChange(event: Event) {
+    form.thumbnail = (event.target as HTMLInputElement).files?.[0] ?? null
+}
+
+function handleImagesChange(event: Event) {
+    const files = (event.target as HTMLInputElement).files
+    if (files) {
+        form.images = Array.from(files)
     }
 }
 
@@ -93,6 +106,33 @@ function submit() {
                     <div class="grid grid-cols-2 gap-4">
                         <Input v-model="form.province" label="Provinsi" :error="form.errors.province" required />
                         <Input v-model="form.postal_code" label="Kode Pos" :error="form.errors.postal_code" />
+                    </div>
+                </div>
+
+                <!-- Photos -->
+                <div class="bg-white p-5 space-y-4">
+                    <p class="text-xs text-(--color-text-secondary) uppercase tracking-wide">Foto Kost</p>
+                    <div>
+                        <label class="block text-sm font-medium text-(--color-text-primary) mb-1">Foto Utama (Thumbnail)</label>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            class="block text-sm text-(--color-text-secondary) file:mr-3 file:py-1.5 file:px-3 file:bg-(--color-surface) file:text-sm file:border-0 file:cursor-pointer"
+                            @change="handleThumbnailChange"
+                        />
+                        <p v-if="form.errors.thumbnail" class="mt-1 text-xs text-(--color-primary)">{{ form.errors.thumbnail }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-(--color-text-primary) mb-1">Foto Lainnya</label>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            class="block text-sm text-(--color-text-secondary) file:mr-3 file:py-1.5 file:px-3 file:bg-(--color-surface) file:text-sm file:border-0 file:cursor-pointer"
+                            @change="handleImagesChange"
+                        />
+                        <p class="mt-1 text-xs text-(--color-text-secondary)">Maks. 10 foto, ukuran masing-masing maks. 4MB</p>
+                        <p v-if="form.errors.images" class="mt-1 text-xs text-(--color-primary)">{{ form.errors.images }}</p>
                     </div>
                 </div>
 

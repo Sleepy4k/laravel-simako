@@ -48,6 +48,7 @@ watch(search, () => {
                             <th class="text-left px-4 py-3 font-medium">Nama</th>
                             <th class="text-left px-4 py-3 font-medium">Email</th>
                             <th class="text-left px-4 py-3 font-medium">Nomor HP</th>
+                            <th class="text-left px-4 py-3 font-medium">Jenis Kelamin</th>
                             <th class="text-left px-4 py-3 font-medium">Status</th>
                             <th class="text-left px-4 py-3 font-medium">Aksi</th>
                         </tr>
@@ -57,6 +58,7 @@ watch(search, () => {
                             <td class="px-4 py-3 font-medium text-(--color-text-primary)">{{ user.userProfile?.name ?? '-' }}</td>
                             <td class="px-4 py-3 text-(--color-text-secondary)">{{ user.email }}</td>
                             <td class="px-4 py-3 text-(--color-text-secondary)">{{ user.phone ?? '-' }}</td>
+                            <td class="px-4 py-3 text-(--color-text-secondary)">{{ user.userProfile?.gender === 'male' ? 'Laki-laki' : user.userProfile?.gender === 'female' ? 'Perempuan' : '-' }}</td>
                             <td class="px-4 py-3">
                                 <Badge :variant="user.is_active ? 'success' : 'neutral'" :label="user.is_active ? 'Aktif' : 'Nonaktif'" />
                             </td>

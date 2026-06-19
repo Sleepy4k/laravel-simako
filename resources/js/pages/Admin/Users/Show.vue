@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3'
+import { ref } from 'vue'
+import { Link, useForm } from '@inertiajs/vue3'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import Badge from '@/components/ui/Badge.vue'
+import Button from '@/components/ui/Button.vue'
+import Modal from '@/components/ui/Modal.vue'
 import type { User, Booking } from '@/types/models'
 import * as AdminUserController from '@/actions/App/Http/Controllers/Admin/UserController'
 
@@ -25,6 +28,24 @@ function statusLabel(status: string): string {
 
 function formatDate(date: string) {
     return new Intl.DateTimeFormat('id-ID', { year: 'numeric', month: 'long', day: 'numeric' }).format(new Date(date))
+}
+
+const showSuspendModal = ref(false)
+const showActivateModal = ref(false)
+
+const suspendForm = useForm({ is_active: false })
+const activateForm = useForm({ is_active: true })
+
+function suspendUser() {
+    suspendForm.patch(AdminUserController.update.url(props.user.id), {
+        onSuccess: () => { showSuspendModal.value = false },
+    })
+}
+
+function activateUser() {
+    activateForm.patch(AdminUserController.update.url(props.user.id), {
+        onSuccess: () => { showActivateModal.value = false },
+    })
 }
 </script>
 
@@ -61,6 +82,28 @@ function formatDate(date: string) {
                 </div>
             </div>
 
+            <!-- Actions -->
+            <div class="bg-white p-5 mb-4">
+                <p class="text-xs text-(--color-text-secondary) uppercase tracking-wide mb-4">Tindakan Admin</p>
+                <div class="flex flex-wrap gap-3">
+                    <Button
+                        v-if="props.user.is_active"
+                        variant="outline"
+                        size="sm"
+                        @click="showSuspendModal = true"
+                    >
+                        Tangguhkan Akun
+                    </Button>
+                    <Button
+                        v-else
+                        size="sm"
+                        @click="showActivateModal = true"
+                    >
+                        Aktifkan Akun
+                    </Button>
+                </div>
+            </div>
+
             <!-- Booking history -->
             <div class="bg-white p-5">
                 <p class="text-xs text-(--color-text-secondary) uppercase tracking-wide mb-3">Riwayat Booking</p>
@@ -80,5 +123,27 @@ function formatDate(date: string) {
                 <p v-else class="text-sm text-(--color-text-secondary)">Belum ada booking.</p>
             </div>
         </div>
+
+        <Modal
+            :open="showSuspendModal"
+            title="Tangguhkan Akun Pengguna?"
+            message="Pengguna tidak akan bisa login setelah ditangguhkan."
+            confirm-label="Ya, Tangguhkan"
+            confirm-variant="danger"
+            :loading="suspendForm.processing"
+            @confirm="suspendUser"
+            @cancel="showSuspendModal = false"
+        />
+
+        <Modal
+            :open="showActivateModal"
+            title="Aktifkan Akun Pengguna?"
+            message="Pengguna akan bisa kembali login setelah diaktifkan."
+            confirm-label="Ya, Aktifkan"
+            confirm-variant="primary"
+            :loading="activateForm.processing"
+            @confirm="activateUser"
+            @cancel="showActivateModal = false"
+        />
     </DashboardLayout>
 </template>

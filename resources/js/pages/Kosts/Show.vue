@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Link } from '@inertiajs/vue3'
+import { Link, useForm, usePage } from '@inertiajs/vue3'
 import AppLayout from '@/layouts/AppLayout.vue'
 import Badge from '@/components/ui/Badge.vue'
 import type { Kost } from '@/types/models'
+import type { AuthUser } from '@/types/auth'
 
 const props = defineProps<{
     kost: Kost
@@ -54,6 +55,16 @@ const heroImage = computed(() => {
     if (props.kost.images?.length) return props.kost.images[0].path
     return props.kost.thumbnail
 })
+
+const page = usePage<{ auth: { user: AuthUser | null } }>()
+const authUser = computed(() => page.props.auth.user)
+const isPengguna = computed(() => authUser.value?.role?.name === 'pengguna')
+
+const chatForm = useForm({})
+
+function startChat() {
+    chatForm.post(`/dashboard/messages/kost/${props.kost.id}`)
+}
 </script>
 
 <template>
@@ -171,6 +182,27 @@ const heroImage = computed(() => {
                             <p class="text-lg font-black text-(--color-text-primary)">{{ props.kost.available_rooms }} kamar tersedia</p>
                             <p class="text-xs text-(--color-text-secondary) mt-0.5">dari {{ props.kost.total_rooms }} total kamar di kost ini</p>
                         </div>
+
+                        <div v-if="isPengguna" class="border-t border-slate-100 pt-4">
+                            <button
+                                type="button"
+                                :disabled="chatForm.processing"
+                                class="w-full px-4 py-2.5 text-sm font-semibold border border-(--color-primary) text-(--color-primary) hover:bg-(--color-primary) hover:text-white rounded-xl transition-all disabled:opacity-50"
+                                @click="startChat"
+                            >
+                                Hubungi Pemilik Kost
+                            </button>
+                        </div>
+
+                        <div v-else-if="!authUser" class="border-t border-slate-100 pt-4">
+                            <Link
+                                href="/login"
+                                class="block text-center w-full px-4 py-2.5 text-sm font-semibold border border-(--color-primary) text-(--color-primary) hover:bg-(--color-primary) hover:text-white rounded-xl transition-all"
+                            >
+                                Login untuk Chat
+                            </Link>
+                        </div>
+
                         <div class="border-t border-slate-100 pt-4">
                             <Link href="/kosts" class="block text-center text-sm font-semibold text-(--color-text-secondary) hover:text-(--color-primary) transition-colors">
                                 ← Kembali ke daftar kost

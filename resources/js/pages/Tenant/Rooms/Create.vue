@@ -31,6 +31,7 @@ const form = useForm({
     size_sqm: '' as string | number,
     is_available: true,
     facility_ids: [] as number[],
+    images: [] as File[],
     prices: periodOptions.map((p) => ({
         period: p.value,
         price: '' as string | number,
@@ -57,10 +58,22 @@ function toggleFacility(id: number) {
     }
 }
 
+function handleImagesChange(event: Event) {
+    const files = (event.target as HTMLInputElement).files
+    if (files) {
+        form.images = Array.from(files)
+    }
+}
+
 function goBack() { router.visit('/dashboard/kosts/' + props.kost.slug + '/rooms') }
 
 function submit() {
-    form.post(TenantRoomController.store.url(props.kost.id))
+    form.transform((data) => ({
+        ...data,
+        prices: data.prices
+            .filter((p) => p.enabled)
+            .map(({ period, price, deposit }) => ({ period, price: Number(price), deposit: deposit ? Number(deposit) : 0 })),
+    })).post(TenantRoomController.store.url(props.kost.id))
 }
 </script>
 
@@ -125,6 +138,20 @@ function submit() {
                             </label>
                         </div>
                     </div>
+                </div>
+
+                <!-- Images -->
+                <div class="bg-white p-5">
+                    <p class="text-xs text-(--color-text-secondary) uppercase tracking-wide mb-3">Foto Kamar</p>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        class="block text-sm text-(--color-text-secondary) file:mr-3 file:py-1.5 file:px-3 file:bg-(--color-surface) file:text-sm file:border-0 file:cursor-pointer"
+                        @change="handleImagesChange"
+                    />
+                    <p class="mt-1 text-xs text-(--color-text-secondary)">Maks. 10 foto, ukuran masing-masing maks. 4MB</p>
+                    <p v-if="form.errors.images" class="mt-1 text-xs text-(--color-primary)">{{ form.errors.images }}</p>
                 </div>
 
                 <div class="flex gap-3">

@@ -32,6 +32,7 @@ const form = useForm({
     size_sqm: props.room.size_sqm ?? ('' as string | number),
     is_available: props.room.is_available,
     facility_ids: props.room.facilities?.map((f) => f.id) ?? [],
+    images: [] as File[],
     prices: periodOptions.map((p) => {
         const existing = props.room.prices?.find((pr) => pr.period === p.value)
         return {
@@ -61,10 +62,22 @@ function toggleFacility(id: number) {
     }
 }
 
+function handleImagesChange(event: Event) {
+    const files = (event.target as HTMLInputElement).files
+    if (files) {
+        form.images = Array.from(files)
+    }
+}
+
 function goBack() { router.visit('/dashboard/kosts/' + props.kost.slug + '/rooms') }
 
 function submit() {
-    form.patch(TenantRoomController.update.url({ kost: props.kost.id, room: props.room.id }))
+    form.transform((data) => ({
+        ...data,
+        prices: data.prices
+            .filter((p) => p.enabled)
+            .map(({ period, price, deposit }) => ({ period, price: Number(price), deposit: deposit ? Number(deposit) : 0 })),
+    })).patch(TenantRoomController.update.url({ kost: props.kost.id, room: props.room.id }))
 }
 </script>
 
@@ -129,6 +142,29 @@ function submit() {
                             </label>
                         </div>
                     </div>
+                </div>
+
+                <!-- Images -->
+                <div class="bg-white p-5">
+                    <p class="text-xs text-(--color-text-secondary) uppercase tracking-wide mb-2">Tambah Foto Kamar</p>
+                    <div v-if="props.room.images?.length" class="flex gap-2 flex-wrap mb-3">
+                        <img
+                            v-for="img in props.room.images"
+                            :key="img.id"
+                            :src="img.path"
+                            alt="Foto kamar"
+                            class="h-20 w-20 object-cover"
+                        />
+                    </div>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        class="block text-sm text-(--color-text-secondary) file:mr-3 file:py-1.5 file:px-3 file:bg-(--color-surface) file:text-sm file:border-0 file:cursor-pointer"
+                        @change="handleImagesChange"
+                    />
+                    <p class="mt-1 text-xs text-(--color-text-secondary)">Foto baru akan ditambahkan ke yang sudah ada. Maks. 10 foto baru.</p>
+                    <p v-if="form.errors.images" class="mt-1 text-xs text-(--color-primary)">{{ form.errors.images }}</p>
                 </div>
 
                 <div class="flex gap-3">

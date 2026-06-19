@@ -40,9 +40,10 @@ onMounted(() => scrollToBottom())
             <!-- Header -->
             <div class="bg-white px-5 py-4 border-b border-(--color-border)">
                 <p class="text-base font-semibold text-(--color-text-primary)">
-                    {{ props.thread.booking?.room?.kost?.name ?? 'Percakapan' }}
+                    {{ props.thread.kost?.name ?? props.thread.booking?.room?.kost?.name ?? 'Percakapan' }}
                 </p>
-                <p class="text-xs text-(--color-text-secondary)">Kamar: {{ props.thread.booking?.room?.name ?? '-' }}</p>
+                <p v-if="props.thread.booking?.room?.name" class="text-xs text-(--color-text-secondary)">Kamar: {{ props.thread.booking.room.name }}</p>
+                <p v-else class="text-xs text-(--color-text-secondary)">Chat dengan pemilik kost</p>
             </div>
 
             <!-- Messages -->

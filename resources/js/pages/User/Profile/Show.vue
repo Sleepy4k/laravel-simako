@@ -8,14 +8,14 @@ import type { AuthUser } from '@/types/auth'
 import type { UserProfile } from '@/types/models'
 
 const props = defineProps<{
-    user: AuthUser & { userProfile: UserProfile }
+    user: AuthUser
+    userProfile: UserProfile | null
 }>()
 
 const form = useForm({
-    _method: 'PATCH',
-    name: props.user.userProfile?.name ?? '',
-    gender: props.user.userProfile?.gender ?? '',
-    birth_date: props.user.userProfile?.birth_date ?? '',
+    name: props.userProfile?.name ?? '',
+    gender: props.userProfile?.gender ?? '',
+    birth_date: props.userProfile?.birth_date ?? '',
     avatar: null as File | null,
     id_card_image: null as File | null,
 })
@@ -29,7 +29,7 @@ function handleIdCardChange(event: Event) {
 }
 
 function submit() {
-    form.post('/dashboard/profile', { forceFormData: true })
+    form.patch('/dashboard/profile')
 }
 </script>
 
@@ -44,8 +44,8 @@ function submit() {
                     <p class="text-xs text-(--color-text-secondary) uppercase tracking-wide mb-4">Foto Profil</p>
                     <div class="flex items-center gap-4">
                         <Avatar
-                            :src="props.user.userProfile?.avatar"
-                            :name="props.user.userProfile?.name ?? props.user.email"
+                            :src="props.userProfile?.avatar"
+                            :name="props.userProfile?.name ?? props.user.email"
                             size="lg"
                         />
                         <div>
@@ -95,8 +95,8 @@ function submit() {
                 <!-- ID Card -->
                 <div class="bg-white p-5">
                     <p class="text-xs text-(--color-text-secondary) uppercase tracking-wide mb-3">KTP / Identitas</p>
-                    <div v-if="props.user.userProfile?.id_card_image" class="mb-3">
-                        <img :src="props.user.userProfile.id_card_image" alt="KTP" class="max-h-40 object-contain" />
+                    <div v-if="props.userProfile?.id_card_image" class="mb-3">
+                        <img :src="props.userProfile.id_card_image" alt="KTP" class="max-h-40 object-contain" />
                     </div>
                     <input
                         type="file"

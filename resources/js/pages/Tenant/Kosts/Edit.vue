@@ -23,6 +23,7 @@ const form = useForm({
     province: props.kost.address?.province ?? '',
     postal_code: props.kost.address?.postal_code ?? '',
     facility_ids: props.kost.facilities?.map((f) => f.id) ?? [],
+    thumbnail: null as File | null,
 })
 
 const groupedFacilities = computed(() => {
@@ -41,6 +42,10 @@ function toggleFacility(id: number) {
     } else {
         form.facility_ids.splice(idx, 1)
     }
+}
+
+function handleThumbnailChange(event: Event) {
+    form.thumbnail = (event.target as HTMLInputElement).files?.[0] ?? null
 }
 
 function goBack() { router.visit('/dashboard/kosts') }
@@ -107,6 +112,22 @@ function submit() {
                         <Input v-model="form.province" label="Provinsi" required />
                         <Input v-model="form.postal_code" label="Kode Pos" />
                     </div>
+                </div>
+
+                <!-- Thumbnail -->
+                <div class="bg-white p-5">
+                    <p class="text-xs text-(--color-text-secondary) uppercase tracking-wide mb-3">Foto Utama (Thumbnail)</p>
+                    <div v-if="props.kost.thumbnail" class="mb-3">
+                        <img :src="props.kost.thumbnail" alt="Thumbnail" class="h-32 object-cover" />
+                    </div>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        class="block text-sm text-(--color-text-secondary) file:mr-3 file:py-1.5 file:px-3 file:bg-(--color-surface) file:text-sm file:border-0 file:cursor-pointer"
+                        @change="handleThumbnailChange"
+                    />
+                    <p class="mt-1 text-xs text-(--color-text-secondary)">Upload foto baru untuk mengganti yang lama.</p>
+                    <p v-if="form.errors.thumbnail" class="mt-1 text-xs text-(--color-primary)">{{ form.errors.thumbnail }}</p>
                 </div>
 
                 <!-- Facilities -->

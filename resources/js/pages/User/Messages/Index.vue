@@ -33,7 +33,7 @@ function hasUnread(thread: MessageThread) {
                     <div class="flex-1 min-w-0">
                         <div class="flex items-center gap-2 mb-1">
                             <p class="text-sm font-semibold text-(--color-text-primary) truncate">
-                                {{ thread.booking?.room?.kost?.name ?? 'Kost' }}
+                                {{ thread.kost?.name ?? thread.booking?.room?.kost?.name ?? 'Kost' }}
                             </p>
                             <span v-if="hasUnread(thread)" class="w-2 h-2 rounded-full bg-(--color-primary) flex-shrink-0" />
                         </div>

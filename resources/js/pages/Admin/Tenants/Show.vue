@@ -15,8 +15,10 @@ const props = defineProps<{
 const showVerifyModal = ref(false)
 const showSuspendModal = ref(false)
 
+const showActivateModal = ref(false)
 const verifyForm = useForm({})
 const suspendForm = useForm({ suspension_reason: '' })
+const activateForm = useForm({})
 
 function verify() {
     verifyForm.patch(AdminTenantController.verify.url(props.tenant.id), {
@@ -30,6 +32,14 @@ function suspend() {
     suspendForm.patch(AdminTenantController.suspend.url(props.tenant.id), {
         onSuccess: () => {
             showSuspendModal.value = false
+        }
+    })
+}
+
+function activate() {
+    activateForm.patch(AdminTenantController.verify.url(props.tenant.id), {
+        onSuccess: () => {
+            showActivateModal.value = false
         }
     })
 }
@@ -105,6 +115,14 @@ function formatDate(date: string) {
                     >
                         Tangguhkan Akun
                     </Button>
+
+                    <Button
+                        v-if="props.tenant.tenantProfile?.is_suspended"
+                        size="sm"
+                        @click="showActivateModal = true"
+                    >
+                        Aktifkan Kembali
+                    </Button>
                 </div>
             </div>
 
@@ -118,6 +136,18 @@ function formatDate(date: string) {
                 :loading="verifyForm.processing"
                 @confirm="verify"
                 @cancel="showVerifyModal = false"
+            />
+
+            <!-- Activate Confirmation Modal -->
+            <Modal
+                :open="showActivateModal"
+                title="Aktifkan Kembali Akun Tenant?"
+                message="Tenant akan diaktifkan kembali dan penangguhan akan dicabut."
+                confirm-label="Ya, Aktifkan"
+                confirm-variant="primary"
+                :loading="activateForm.processing"
+                @confirm="activate"
+                @cancel="showActivateModal = false"
             />
 
             <!-- Suspend Confirmation Modal -->
