@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
-use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class RegisterController extends Controller
 {
@@ -28,7 +27,7 @@ class RegisterController extends Controller
         return Inertia::render('Auth/RegisterUser');
     }
 
-    public function storeUser(RegisterUserRequest $request): SymfonyResponse
+    public function storeUser(RegisterUserRequest $request): \Illuminate\Http\RedirectResponse
     {
         $validated = $request->validated();
 
@@ -61,7 +60,7 @@ class RegisterController extends Controller
 
         Auth::login($user);
 
-        return Inertia::location(route('dashboard.index'));
+        return redirect()->route('dashboard.index');
     }
 
     public function showTenantForm(): Response
@@ -69,7 +68,7 @@ class RegisterController extends Controller
         return Inertia::render('Auth/RegisterTenant');
     }
 
-    public function storeTenant(RegisterTenantRequest $request): SymfonyResponse
+    public function storeTenant(RegisterTenantRequest $request): \Illuminate\Http\RedirectResponse
     {
         $validated = $request->validated();
 
@@ -107,6 +106,6 @@ class RegisterController extends Controller
 
         Auth::login($user);
 
-        return Inertia::location(route('dashboard.index'));
+        return redirect()->route('dashboard.index');
     }
 }

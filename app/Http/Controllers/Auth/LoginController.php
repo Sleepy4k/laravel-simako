@@ -7,7 +7,6 @@ use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
-use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class LoginController extends Controller
 {
@@ -16,7 +15,7 @@ class LoginController extends Controller
         return Inertia::render('Auth/Login');
     }
 
-    public function store(LoginRequest $request): SymfonyResponse
+    public function store(LoginRequest $request): \Illuminate\Http\RedirectResponse
     {
         $credentials = [
             'login' => $request->login,
@@ -31,16 +30,16 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
-        return Inertia::location(route('dashboard.index'));
+        return redirect()->route('dashboard.index');
     }
 
-    public function destroy(): SymfonyResponse
+    public function destroy(): \Illuminate\Http\RedirectResponse
     {
         Auth::logout();
 
         request()->session()->invalidate();
         request()->session()->regenerateToken();
 
-        return Inertia::location(route('home'));
+        return redirect()->route('home');
     }
 }
