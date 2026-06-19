@@ -53,6 +53,7 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
         Route::post('/payments/{payment}/proof', [User\PaymentController::class, 'uploadProof'])->name('payments.proof');
 
         Route::get('/messages', [User\MessageController::class, 'index'])->name('messages.index');
+        Route::post('/messages/kost/{kost}', [User\MessageController::class, 'storeFromKost'])->name('messages.storeFromKost');
         Route::get('/messages/{thread}', [User\MessageController::class, 'show'])->name('messages.show');
         Route::post('/messages/{thread}', [User\MessageController::class, 'store'])->name('messages.store');
     });
