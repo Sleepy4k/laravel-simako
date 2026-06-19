@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useForm, router } from '@inertiajs/vue3'
+import { useForm, router, Head } from '@inertiajs/vue3'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import Input from '@/components/ui/Input.vue'
 import Button from '@/components/ui/Button.vue'
@@ -82,6 +82,7 @@ function submit() {
 </script>
 
 <template>
+    <Head :title="`Edit Kamar - ${props.room.name}`" />
     <DashboardLayout>
         <div class="max-w-2xl">
             <h1 class="text-xl font-bold text-(--color-text-primary) mb-1">Edit Kamar</h1>

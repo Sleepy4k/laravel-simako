@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { Head } from '@inertiajs/vue3'
 import AppLayout from '@/layouts/AppLayout.vue'
 </script>
 
 <template>
+    <Head title="Syarat & Ketentuan" />
     <AppLayout>
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <h1 class="text-3xl font-black text-(--color-text-primary) tracking-tight mb-8">

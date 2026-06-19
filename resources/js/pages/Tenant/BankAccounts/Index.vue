@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useForm, router } from '@inertiajs/vue3'
+import { useForm, router, Head } from '@inertiajs/vue3'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import Badge from '@/components/ui/Badge.vue'
 import Button from '@/components/ui/Button.vue'
@@ -83,6 +83,7 @@ function doDelete() {
 </script>
 
 <template>
+    <Head title="Rekening Bank" />
     <DashboardLayout>
         <div class="max-w-2xl">
             <div class="flex items-center justify-between mb-6">

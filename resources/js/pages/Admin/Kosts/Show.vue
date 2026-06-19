@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Link } from '@inertiajs/vue3'
+import { Link, Head } from '@inertiajs/vue3'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import Badge from '@/components/ui/Badge.vue'
 import type { Kost } from '@/types/models'
@@ -27,6 +27,7 @@ const typeLabel = computed(() => {
 </script>
 
 <template>
+    <Head :title="`Detail Kost - ${props.kost.name}`" />
     <DashboardLayout>
         <div class="max-w-2xl">
             <Link :href="AdminKostController.index.url()" class="text-sm text-(--color-text-secondary) hover:text-(--color-primary) mb-6 inline-block">← Kembali</Link>

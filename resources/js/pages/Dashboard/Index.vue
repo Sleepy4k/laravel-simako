@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Link, usePage } from '@inertiajs/vue3'
+import { Link, usePage, Head } from '@inertiajs/vue3'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import StatCard from '@/components/dashboard/StatCard.vue'
 import LineChart from '@/components/charts/LineChart.vue'
@@ -27,6 +27,7 @@ function formatCurrency(amount: number) {
 </script>
  
 <template>
+    <Head title="Dashboard" />
     <DashboardLayout>
         <div class="space-y-6">
             <h1 class="text-xl sm:text-2xl font-black text-(--color-text-primary)">
@@ -124,7 +125,7 @@ function formatCurrency(amount: number) {
                                 >
                                     <div>
                                         <p class="text-xs font-bold text-(--color-text-primary)">{{ b.user?.userProfile?.name ?? b.user?.email }}</p>
-                                        <p class="text-[10px] text-(--color-text-secondary) mt-0.5">{{ b.room?.kost?.name }} — {{ b.room?.name }}</p>
+                                        <p class="text-[10px] text-(--color-text-secondary) mt-0.5">{{ b.room?.kost?.name }} - {{ b.room?.name }}</p>
                                     </div>
                                     <span class="text-[10px] px-2 py-0.5 rounded-full font-bold uppercase" :class="b.status === 'active' ? 'bg-green-50 text-green-700' : 'bg-amber-50 text-amber-700'">
                                         {{ b.status }}

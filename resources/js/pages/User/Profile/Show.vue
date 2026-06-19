@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useForm } from '@inertiajs/vue3'
+import { useForm, Head } from '@inertiajs/vue3'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import Input from '@/components/ui/Input.vue'
 import Button from '@/components/ui/Button.vue'
@@ -34,6 +34,7 @@ function submit() {
 </script>
 
 <template>
+    <Head title="Profil Saya" />
     <DashboardLayout>
         <div class="max-w-xl">
             <h1 class="text-xl font-bold text-(--color-text-primary) mb-6">Profil Saya</h1>

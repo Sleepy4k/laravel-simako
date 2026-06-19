@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3'
+import { Link, Head } from '@inertiajs/vue3'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import Badge from '@/components/ui/Badge.vue'
 import type { Booking } from '@/types/models'
@@ -40,6 +40,7 @@ function formatCurrency(amount: number) {
 </script>
 
 <template>
+    <Head title="Detail Booking" />
     <DashboardLayout>
         <div class="max-w-2xl">
             <Link :href="AdminBookingController.index.url()" class="text-sm text-(--color-text-secondary) hover:text-(--color-primary) mb-6 inline-block">← Kembali</Link>

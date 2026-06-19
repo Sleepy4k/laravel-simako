@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3'
+import { Link, Head } from '@inertiajs/vue3'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import Badge from '@/components/ui/Badge.vue'
 import Pagination from '@/components/ui/Pagination.vue'
@@ -38,6 +38,7 @@ function formatDate(date: string) {
 </script>
 
 <template>
+    <Head title="Booking Saya" />
     <DashboardLayout>
         <div>
             <h1 class="text-xl font-bold text-(--color-text-primary) mb-6">Booking Saya</h1>

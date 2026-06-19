@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Link, useForm } from '@inertiajs/vue3'
+import { Link, useForm, Head } from '@inertiajs/vue3'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import Badge from '@/components/ui/Badge.vue'
 import Button from '@/components/ui/Button.vue'
@@ -50,6 +50,7 @@ function activateUser() {
 </script>
 
 <template>
+    <Head title="Detail Pengguna" />
     <DashboardLayout>
         <div class="max-w-2xl">
             <div class="flex items-center gap-3 mb-6">
@@ -114,7 +115,7 @@ function activateUser() {
                         class="flex items-center justify-between py-2 border-b border-(--color-border) last:border-0"
                     >
                         <div>
-                            <p class="text-sm text-(--color-text-primary)">{{ booking.room?.kost?.name ?? '-' }} — {{ booking.room?.name ?? '-' }}</p>
+                            <p class="text-sm text-(--color-text-primary)">{{ booking.room?.kost?.name ?? '-' }} - {{ booking.room?.name ?? '-' }}</p>
                             <p class="text-xs text-(--color-text-secondary)">{{ formatDate(booking.start_date) }}</p>
                         </div>
                         <Badge :variant="statusVariant(booking.status)" :label="statusLabel(booking.status)" />

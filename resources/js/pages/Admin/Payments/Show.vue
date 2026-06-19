@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3'
+import { Link, Head } from '@inertiajs/vue3'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import Badge from '@/components/ui/Badge.vue'
 import type { Payment } from '@/types/models'
@@ -33,6 +33,7 @@ function formatDate(date: string) {
 </script>
 
 <template>
+    <Head title="Detail Pembayaran" />
     <DashboardLayout>
         <div class="max-w-xl">
             <Link :href="AdminPaymentController.index.url()" class="text-sm text-(--color-text-secondary) hover:text-(--color-primary) mb-6 inline-block">← Kembali</Link>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Link, useForm } from '@inertiajs/vue3'
+import { Link, useForm, Head } from '@inertiajs/vue3'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import Badge from '@/components/ui/Badge.vue'
 import Button from '@/components/ui/Button.vue'
@@ -50,6 +50,7 @@ function formatDate(date: string) {
 </script>
 
 <template>
+    <Head :title="`Detail Tenant - ${props.tenant.userProfile?.name ?? ''}`" />
     <DashboardLayout>
         <div class="max-w-2xl">
             <Link :href="AdminTenantController.index.url()" class="text-sm font-semibold text-(--color-text-secondary) hover:text-(--color-primary) mb-6 inline-block">← Kembali</Link>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3'
+import { Head, Link } from '@inertiajs/vue3'
 import AuthLayout from '@/layouts/AuthLayout.vue'
 import Input from '@/components/ui/Input.vue'
 import Button from '@/components/ui/Button.vue'
@@ -20,9 +21,11 @@ function submit() {
 </script>
 
 <template>
+    <Head title="Masuk" />
     <AuthLayout>
         <div>
-            <h1 class="text-xl font-bold text-(--color-text-primary) mb-6">Masuk ke Simako</h1>
+            <h1 class="text-xl font-bold text-slate-900 mb-1">Selamat datang kembali</h1>
+            <p class="text-sm text-slate-500 mb-6">Masuk ke akun Simako Anda</p>
 
             <form @submit.prevent="submit" class="space-y-4">
                 <Input
@@ -51,9 +54,9 @@ function submit() {
                 </Button>
             </form>
 
-            <div class="mt-6 text-center text-sm text-(--color-text-secondary)">
+            <div class="mt-6 text-center text-sm text-slate-500">
                 Belum punya akun?
-                <a href="/register" class="font-semibold text-(--color-primary) hover:text-(--color-primary-hover)">Daftar sekarang</a>
+                <Link href="/register" class="font-semibold text-(--color-primary) hover:text-(--color-primary-hover)">Daftar sekarang</Link>
             </div>
         </div>
     </AuthLayout>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Link, useForm, usePage } from '@inertiajs/vue3'
+import { Link, useForm, usePage, Head } from '@inertiajs/vue3'
 import AppLayout from '@/layouts/AppLayout.vue'
 import Badge from '@/components/ui/Badge.vue'
 import type { Kost } from '@/types/models'
@@ -68,6 +68,7 @@ function startChat() {
 </script>
 
 <template>
+    <Head :title="props.kost.name" />
     <AppLayout>
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
             <!-- Image -->

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { Head } from '@inertiajs/vue3'
 import AppLayout from '@/layouts/AppLayout.vue'
 
 interface FAQItem {
@@ -78,6 +79,7 @@ function toggleFaq(id: number) {
 </script>
 
 <template>
+    <Head title="Pusat Bantuan" />
     <AppLayout>
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <!-- Header -->

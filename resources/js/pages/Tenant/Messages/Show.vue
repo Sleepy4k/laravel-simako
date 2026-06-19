@@ -42,7 +42,7 @@ onMounted(() => scrollToBottom())
                     {{ props.thread.booking?.user?.userProfile?.name ?? props.thread.booking?.user?.email ?? 'Penyewa' }}
                 </p>
                 <p class="text-xs text-(--color-text-secondary)">
-                    {{ props.thread.booking?.room?.kost?.name }} — {{ props.thread.booking?.room?.name }}
+                    {{ props.thread.booking?.room?.kost?.name }} - {{ props.thread.booking?.room?.name }}
                 </p>
             </div>
 

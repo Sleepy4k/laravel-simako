@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3'
+import { Link, Head } from '@inertiajs/vue3'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import type { MessageThread } from '@/types/models'
 
@@ -19,6 +19,7 @@ function hasUnread(thread: MessageThread) {
 </script>
 
 <template>
+    <Head title="Pesan" />
     <DashboardLayout>
         <div>
             <h1 class="text-xl font-bold text-(--color-text-primary) mb-6">Pesan</h1>

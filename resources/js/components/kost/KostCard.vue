@@ -52,45 +52,49 @@ const kostUrl = computed(() => PublicKostController.show.url(props.kost.slug))
 
 <template>
     <Link :href="kostUrl" class="block group">
-        <div class="bg-white overflow-hidden">
-            <!-- 16:9 thumbnail -->
-            <div class="relative w-full" style="padding-top: 56.25%">
+        <div class="bg-white rounded-2xl overflow-hidden border border-slate-200 hover:border-slate-300 hover:shadow-lg transition-all duration-300">
+            <!-- Thumbnail -->
+            <div class="relative w-full overflow-hidden" style="padding-top: 60%">
                 <img
                     v-if="props.kost.thumbnail"
                     :src="props.kost.thumbnail"
                     :alt="props.kost.name"
-                    class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <div v-else class="absolute inset-0 bg-gray-200 flex items-center justify-center">
-                    <svg class="w-10 h-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div v-else class="absolute inset-0 bg-slate-100 flex items-center justify-center">
+                    <svg class="w-10 h-10 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                     </svg>
+                </div>
+                <!-- Type badge overlay -->
+                <div class="absolute top-3 left-3">
+                    <Badge :variant="typeVariant" :label="typeLabel" />
+                </div>
+                <!-- Available rooms badge -->
+                <div class="absolute top-3 right-3 bg-black/50 backdrop-blur-sm text-white text-xs font-semibold px-2 py-0.5 rounded-full">
+                    {{ props.kost.available_rooms }} tersedia
                 </div>
             </div>
 
             <!-- Content -->
-            <div class="pt-3 pb-1">
-                <div class="flex items-start justify-between gap-2">
-                    <h3 class="text-sm font-semibold text-(--color-text-primary) line-clamp-2 flex-1">
-                        {{ props.kost.name }}
-                    </h3>
-                    <Badge :variant="typeVariant" :label="typeLabel" />
+            <div class="p-4">
+                <h3 class="text-sm font-bold text-slate-900 line-clamp-2 group-hover:text-(--color-primary) transition-colors">
+                    {{ props.kost.name }}
+                </h3>
+
+                <div class="flex items-center gap-1 mt-1.5">
+                    <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <p class="text-xs text-slate-500 truncate">{{ props.kost.address?.city ?? '-' }}</p>
                 </div>
 
-                <p class="text-xs text-(--color-text-secondary) mt-1">
-                    {{ props.kost.address?.city ?? '-' }}
-                </p>
-
-                <div class="mt-2 flex items-center justify-between">
-                    <div>
-                        <span v-if="formattedPrice" class="text-sm font-bold text-(--color-primary)">
-                            Mulai {{ formattedPrice }}/bln
-                        </span>
-                        <span v-else class="text-sm text-(--color-text-secondary)">Harga belum tersedia</span>
-                    </div>
-                    <span class="text-xs text-(--color-text-secondary)">
-                        {{ props.kost.available_rooms }} kamar
+                <div class="mt-3 pt-3 border-t border-slate-100">
+                    <span v-if="formattedPrice" class="text-sm font-bold text-(--color-primary)">
+                        {{ formattedPrice }}<span class="text-xs font-normal text-slate-400">/bln</span>
                     </span>
+                    <span v-else class="text-sm text-slate-400">Harga belum tersedia</span>
                 </div>
             </div>
         </div>

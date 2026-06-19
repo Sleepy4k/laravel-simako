@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link, usePage, router } from '@inertiajs/vue3'
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref, watch } from 'vue'
 import type { Auth } from '@/types/auth'
 import Avatar from '@/components/ui/Avatar.vue'
 import Modal from '@/components/ui/Modal.vue'
@@ -16,10 +16,8 @@ const showLogoutModal = ref(false)
 const showSuccessToast = ref(false)
 const showErrorToast = ref(false)
 
-onMounted(() => {
-    if (flash.value?.success) showSuccessToast.value = true
-    if (flash.value?.error) showErrorToast.value = true
-})
+watch(() => flash.value?.success, (val) => { if (val) showSuccessToast.value = true }, { immediate: true })
+watch(() => flash.value?.error, (val) => { if (val) showErrorToast.value = true }, { immediate: true })
 
 const roleName = computed(() => auth.value.user?.role?.name ?? 'pengguna')
 
@@ -70,6 +68,14 @@ const roleLabel = computed(() => {
     }
 })
 
+const roleColor = computed(() => {
+    switch (roleName.value) {
+        case 'admin': return 'bg-violet-100 text-violet-700'
+        case 'tenant': return 'bg-blue-100 text-blue-700'
+        default: return 'bg-emerald-100 text-emerald-700'
+    }
+})
+
 function isActive(item: NavItem): boolean {
     if (item.exactMatch) return page.url === item.href
     return page.url.startsWith(item.href)
@@ -94,7 +100,7 @@ const ICONS: Record<string, string> = {
 </script>
 
 <template>
-    <div class="min-h-screen bg-(--color-surface) flex">
+    <div class="min-h-screen bg-slate-50 flex">
         <!-- Toast notifications -->
         <div class="fixed top-4 right-4 z-[60] flex flex-col gap-2">
             <Toast
@@ -133,29 +139,36 @@ const ICONS: Record<string, string> = {
         >
             <div
                 v-if="sidebarOpen"
-                class="fixed inset-0 z-20 bg-black/50 backdrop-blur-sm lg:hidden"
+                class="fixed inset-0 z-20 bg-slate-900/50 backdrop-blur-sm lg:hidden"
                 @click="sidebarOpen = false"
             />
         </Transition>
 
         <!-- Sidebar -->
         <aside
-            class="fixed inset-y-0 left-0 z-30 w-64 bg-white flex flex-col transition-transform duration-300 ease-out lg:translate-x-0 lg:static lg:flex border-r border-(--color-border)"
-            :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
+            class="fixed inset-y-0 left-0 z-30 w-64 bg-white flex flex-col transition-transform duration-300 ease-out lg:translate-x-0 lg:static lg:flex border-r border-slate-200"
+            :class="sidebarOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'"
         >
             <!-- Logo -->
-            <div class="flex items-center h-16 px-5 border-b border-(--color-border)">
+            <div class="flex items-center h-16 px-5 border-b border-slate-100">
                 <Link href="/" class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 bg-(--color-primary) rounded-lg flex items-center justify-center">
+                    <div class="w-8 h-8 bg-(--color-primary) rounded-lg flex items-center justify-center shadow-sm shadow-(--color-primary)/30">
                         <span class="text-white font-black text-sm">S</span>
                     </div>
-                    <span class="text-lg font-black text-(--color-text-primary) tracking-tight">Simako</span>
+                    <span class="text-lg font-black text-slate-900 tracking-tight">Simako</span>
                 </Link>
             </div>
 
+            <!-- Role badge -->
+            <div class="px-4 pt-4 pb-2">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold" :class="roleColor">
+                    {{ roleLabel }}
+                </span>
+            </div>
+
             <!-- Nav items -->
-            <nav class="flex-1 overflow-y-auto py-4 px-3">
-                <p class="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-(--color-text-muted)">
+            <nav class="flex-1 overflow-y-auto py-2 px-3">
+                <p class="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">
                     Menu
                 </p>
                 <ul class="space-y-0.5">
@@ -164,13 +177,13 @@ const ICONS: Record<string, string> = {
                             :href="item.href"
                             class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-150"
                             :class="isActive(item)
-                                ? 'text-(--color-primary) bg-(--color-primary-light) font-semibold'
-                                : 'text-(--color-text-secondary) hover:text-(--color-text-primary) hover:bg-(--color-surface)'"
+                                ? 'text-(--color-primary) bg-rose-50 font-semibold'
+                                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'"
                         >
                             <!-- Icon -->
                             <svg
                                 class="w-4.5 h-4.5 shrink-0"
-                                :class="isActive(item) ? 'text-(--color-primary)' : 'text-(--color-text-muted)'"
+                                :class="isActive(item) ? 'text-(--color-primary)' : 'text-slate-400'"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor"
@@ -191,20 +204,20 @@ const ICONS: Record<string, string> = {
             </nav>
 
             <!-- User card at bottom -->
-            <div class="p-4 border-t border-(--color-border)">
-                <div class="flex items-center gap-3 px-2 py-2 rounded-xl hover:bg-(--color-surface) transition-colors cursor-pointer" @click="userMenuOpen = !userMenuOpen">
+            <div class="p-4 border-t border-slate-100">
+                <div class="flex items-center gap-3 px-2 py-2 rounded-xl hover:bg-slate-50 transition-colors cursor-pointer" @click="userMenuOpen = !userMenuOpen">
                     <Avatar
                         :src="auth.user?.userProfile?.avatar ?? null"
                         :name="auth.user?.userProfile?.name ?? auth.user?.email ?? 'U'"
                         size="sm"
                     />
                     <div class="flex-1 min-w-0">
-                        <p class="text-sm font-semibold text-(--color-text-primary) truncate">
+                        <p class="text-sm font-semibold text-slate-900 truncate">
                             {{ auth.user?.userProfile?.name ?? auth.user?.email }}
                         </p>
-                        <p class="text-xs text-(--color-text-muted)">{{ roleLabel }}</p>
+                        <p class="text-xs text-slate-400">{{ roleLabel }}</p>
                     </div>
-                    <svg class="w-4 h-4 text-(--color-text-muted) transition-transform duration-200" :class="userMenuOpen ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg class="w-4 h-4 text-slate-400 transition-transform duration-200" :class="userMenuOpen ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                     </svg>
                 </div>
@@ -218,10 +231,10 @@ const ICONS: Record<string, string> = {
                     leave-from-class="opacity-100 translate-y-0"
                     leave-to-class="opacity-0 -translate-y-1"
                 >
-                    <div v-if="userMenuOpen" class="mt-2 px-2 py-1 bg-(--color-surface) rounded-xl">
+                    <div v-if="userMenuOpen" class="mt-2 px-2 py-1 bg-slate-50 rounded-xl">
                         <Link
                             href="/dashboard/profile"
-                            class="flex items-center gap-2 px-3 py-2 text-sm text-(--color-text-secondary) hover:text-(--color-text-primary) rounded-lg transition-colors"
+                            class="flex items-center gap-2 px-3 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-white rounded-lg transition-colors"
                         >
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -245,10 +258,10 @@ const ICONS: Record<string, string> = {
         <!-- Main content area -->
         <div class="flex-1 flex flex-col min-w-0">
             <!-- Topbar -->
-            <header class="bg-white border-b border-(--color-border) h-16 flex items-center justify-between px-4 sm:px-6 sticky top-0 z-10">
+            <header class="bg-white border-b border-slate-200 h-16 flex items-center justify-between px-4 sm:px-6 sticky top-0 z-10">
                 <!-- Mobile menu button -->
                 <button
-                    class="lg:hidden p-2 text-(--color-text-secondary) hover:text-(--color-text-primary) rounded-lg transition-colors"
+                    class="lg:hidden p-2 text-slate-500 hover:text-slate-900 rounded-lg transition-colors"
                     @click="sidebarOpen = !sidebarOpen"
                 >
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -263,8 +276,8 @@ const ICONS: Record<string, string> = {
 
                 <!-- Right side -->
                 <div class="flex items-center gap-3">
-                    <!-- Notification bell (static) -->
-                    <button class="relative p-2 text-(--color-text-secondary) hover:text-(--color-text-primary) rounded-lg transition-colors">
+                    <!-- Notification bell -->
+                    <button class="relative p-2 text-slate-400 hover:text-slate-700 rounded-lg transition-colors">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                         </svg>
@@ -278,10 +291,10 @@ const ICONS: Record<string, string> = {
                             size="sm"
                         />
                         <div>
-                            <p class="text-sm font-semibold text-(--color-text-primary) leading-tight">
+                            <p class="text-sm font-semibold text-slate-900 leading-tight">
                                 {{ auth.user?.userProfile?.name ?? auth.user?.email }}
                             </p>
-                            <p class="text-xs text-(--color-text-muted) leading-tight">{{ roleLabel }}</p>
+                            <p class="text-xs text-slate-400 leading-tight">{{ roleLabel }}</p>
                         </div>
                     </div>
                 </div>

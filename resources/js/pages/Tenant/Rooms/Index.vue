@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3'
+import { Link, Head } from '@inertiajs/vue3'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import Button from '@/components/ui/Button.vue'
 import type { Kost } from '@/types/models'
@@ -19,11 +19,12 @@ const periodLabel: Record<string, string> = {
 </script>
 
 <template>
+    <Head :title="`Kamar - ${props.kost.name}`" />
     <DashboardLayout>
         <div>
             <div class="flex items-center justify-between mb-6">
                 <div>
-                    <h1 class="text-xl font-bold text-(--color-text-primary)">Kamar — {{ props.kost.name }}</h1>
+                    <h1 class="text-xl font-bold text-(--color-text-primary)">Kamar - {{ props.kost.name }}</h1>
                     <Link :href="`/dashboard/kosts`" class="text-sm text-(--color-text-secondary) hover:text-(--color-primary)">← Kembali ke daftar kost</Link>
                 </div>
                 <Link :href="TenantRoomController.create.url(props.kost.id)">

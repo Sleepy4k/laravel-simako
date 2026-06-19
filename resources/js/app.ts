@@ -11,7 +11,7 @@ router.on('start', () => NProgress.start());
 router.on('finish', () => NProgress.done());
 
 createInertiaApp({
-    title: (title) => (title ? `${title} — ${appName}` : appName),
+    title: (title) => (title ? `${title} - ${appName}` : appName),
     progress: false,
     setup({ el, App, props, plugin }) {
         createSSRApp({ render: () => h(App, props) })

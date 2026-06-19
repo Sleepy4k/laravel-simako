@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Head } from '@inertiajs/vue3'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import StatCard from '@/components/dashboard/StatCard.vue'
 import Badge from '@/components/ui/Badge.vue'
@@ -20,6 +21,7 @@ function formatDate(date: string) {
 </script>
 
 <template>
+    <Head title="Pendapatan Saya" />
     <DashboardLayout>
         <div>
             <h1 class="text-xl font-bold text-(--color-text-primary) mb-6">Pendapatan</h1>

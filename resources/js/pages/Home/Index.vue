@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { router, Link } from '@inertiajs/vue3'
+import { router, Link, Head } from '@inertiajs/vue3'
 import AppLayout from '@/layouts/AppLayout.vue'
 import KostCard from '@/components/kost/KostCard.vue'
 import type { Kost } from '@/types/models'
@@ -60,6 +60,7 @@ const tips = [
 </script>
 
 <template>
+    <Head title="Beranda" />
     <AppLayout>
         <div class="space-y-20 pb-20 bg-slate-50/50">
             <!-- Hero Section -->

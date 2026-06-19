@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Link, router } from '@inertiajs/vue3'
+import { Link, router, Head } from '@inertiajs/vue3'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import Badge from '@/components/ui/Badge.vue'
 import Button from '@/components/ui/Button.vue'
@@ -52,63 +52,72 @@ function doDelete() {
 </script>
 
 <template>
+    <Head title="Kost Saya" />
     <DashboardLayout>
         <div>
             <div class="flex items-center justify-between mb-6">
-                <h1 class="text-xl font-bold text-(--color-text-primary)">Kost Saya</h1>
+                <div>
+                    <h1 class="text-xl font-black text-slate-900">Kost Saya</h1>
+                    <p class="text-sm text-slate-500 mt-0.5">{{ props.kosts.total }} kost terdaftar</p>
+                </div>
                 <Link :href="TenantKostController.create.url()">
                     <Button size="sm">+ Tambah Kost</Button>
                 </Link>
             </div>
 
-            <div v-if="props.kosts.data.length > 0" class="bg-white border border-(--color-border) rounded-2xl overflow-hidden shadow-sm overflow-x-auto">
-                <table class="w-full text-sm">
-                    <thead class="bg-(--color-surface) border-b border-(--color-border) text-(--color-text-secondary)">
-                        <tr>
-                            <th class="text-left px-4 py-3 font-medium">Nama Kost</th>
-                            <th class="text-left px-4 py-3 font-medium">Kota</th>
-                            <th class="text-left px-4 py-3 font-medium">Kamar</th>
-                            <th class="text-left px-4 py-3 font-medium">Status</th>
-                            <th class="text-left px-4 py-3 font-medium">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-(--color-border)">
-                        <tr v-for="kost in props.kosts.data" :key="kost.id">
-                            <td class="px-4 py-3 font-medium text-(--color-text-primary)">{{ kost.name }}</td>
-                            <td class="px-4 py-3 text-(--color-text-secondary)">{{ kost.address?.city ?? '-' }}</td>
-                            <td class="px-4 py-3 text-(--color-text-secondary)">{{ kost.available_rooms }}/{{ kost.total_rooms }}</td>
-                            <td class="px-4 py-3">
-                                <Badge :variant="statusVariant(kost.status)" :label="statusLabel(kost.status)" />
-                            </td>
-                            <td class="px-4 py-3">
-                                <div class="flex items-center gap-3">
-                                    <Link
-                                        :href="TenantKostController.edit.url(kost.id)"
-                                        class="text-sm text-(--color-secondary) font-medium hover:underline"
-                                    >
-                                        Edit
-                                    </Link>
-                                    <Link
-                                        :href="`/dashboard/kosts/${kost.id}/rooms`"
-                                        class="text-sm text-(--color-text-secondary) font-medium hover:text-(--color-text-primary)"
-                                    >
-                                        Kelola Kamar
-                                    </Link>
-                                    <button
-                                        class="text-sm text-(--color-primary) font-medium hover:underline cursor-pointer"
-                                        @click="confirmDelete(kost.id)"
-                                    >
-                                        Hapus
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div v-if="props.kosts.data.length > 0" class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50">
+                                <th class="text-left px-5 py-3.5 font-semibold text-xs text-slate-500 uppercase tracking-wider">Nama Kost</th>
+                                <th class="text-left px-5 py-3.5 font-semibold text-xs text-slate-500 uppercase tracking-wider">Kota</th>
+                                <th class="text-left px-5 py-3.5 font-semibold text-xs text-slate-500 uppercase tracking-wider">Kamar</th>
+                                <th class="text-left px-5 py-3.5 font-semibold text-xs text-slate-500 uppercase tracking-wider">Status</th>
+                                <th class="text-left px-5 py-3.5 font-semibold text-xs text-slate-500 uppercase tracking-wider">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr v-for="kost in props.kosts.data" :key="kost.id" class="hover:bg-slate-50/50 transition-colors">
+                                <td class="px-5 py-4 font-semibold text-slate-900">{{ kost.name }}</td>
+                                <td class="px-5 py-4 text-slate-500">{{ kost.address?.city ?? '-' }}</td>
+                                <td class="px-5 py-4 text-slate-500">{{ kost.available_rooms }}/{{ kost.total_rooms }}</td>
+                                <td class="px-5 py-4">
+                                    <Badge :variant="statusVariant(kost.status)" :label="statusLabel(kost.status)" />
+                                </td>
+                                <td class="px-5 py-4">
+                                    <div class="flex items-center gap-4">
+                                        <Link
+                                            :href="TenantKostController.edit.url(kost.id)"
+                                            class="text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors"
+                                        >
+                                            Edit
+                                        </Link>
+                                        <Link
+                                            :href="`/dashboard/kosts/${kost.id}/rooms`"
+                                            class="text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors"
+                                        >
+                                            Kamar
+                                        </Link>
+                                        <button
+                                            class="text-sm font-semibold text-red-500 hover:text-red-700 transition-colors cursor-pointer"
+                                            @click="confirmDelete(kost.id)"
+                                        >
+                                            Hapus
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
-            <div v-else class="bg-white border border-(--color-border) rounded-2xl p-12 text-center text-(--color-text-secondary) shadow-sm">
-                <p>Anda belum memiliki kost.</p>
+            <div v-else class="bg-white border border-slate-200 rounded-2xl p-16 text-center shadow-sm">
+                <svg class="w-10 h-10 text-slate-300 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                <p class="text-sm font-semibold text-slate-700">Belum ada kost</p>
                 <Link :href="TenantKostController.create.url()" class="mt-3 inline-block text-sm font-semibold text-(--color-primary) hover:underline">
                     Tambah kost pertama Anda
                 </Link>

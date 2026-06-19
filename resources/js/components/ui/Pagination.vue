@@ -18,9 +18,9 @@ function navigate(url: string | null) {
             v-for="link in props.links"
             :key="link.label"
             :disabled="!link.url"
-            class="inline-flex items-center justify-center min-w-[36px] h-9 px-2 text-sm transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            class="inline-flex items-center justify-center min-w-[36px] h-9 px-2.5 text-sm font-medium rounded-lg transition-all disabled:opacity-30 disabled:cursor-not-allowed"
             :class="link.active
-                ? 'bg-(--color-primary) text-white font-semibold'
+                ? 'bg-(--color-primary) text-white shadow-sm'
                 : 'text-(--color-text-secondary) hover:text-(--color-text-primary) hover:bg-(--color-surface)'"
             @click="navigate(link.url)"
             v-html="link.label"

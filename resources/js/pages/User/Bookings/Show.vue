@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useForm } from '@inertiajs/vue3'
+import { useForm, Head } from '@inertiajs/vue3'
 import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import Badge from '@/components/ui/Badge.vue'
 import Button from '@/components/ui/Button.vue'
@@ -55,6 +55,7 @@ function doCancel() {
 </script>
 
 <template>
+    <Head title="Detail Booking" />
     <DashboardLayout>
         <div class="max-w-2xl">
             <div class="flex items-center gap-3 mb-6">
